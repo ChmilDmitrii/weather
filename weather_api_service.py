@@ -49,12 +49,12 @@ def _get_openweather_response(latitude: float, longitude: float) -> str:
 
 
 def _parse_temperature(openweather_dict: dict) -> Celsius:
-    return round(openweather_dict.get('main').get('temp'))
+    return round(openweather_dict['main']['temp'])
 
 
 def _parse_weather_type(openweather_dict: dict) -> WeatherType:
     try:
-        weather_type_id = str(openweather_dict.get('weather')[0].get('id'))
+        weather_type_id = str(openweather_dict['weather'][0]['id'])
     except (IndexError, KeyError):
         raise ApiServiceError
     weather_types = {
@@ -75,11 +75,11 @@ def _parse_weather_type(openweather_dict: dict) -> WeatherType:
 def _parse_sun_time(
         openweather_dict: dict,
         time: Literal['sunrise'] | Literal['sunset']) -> datetime:
-    return datetime.fromtimestamp(openweather_dict.get('sys').get(time))
+    return datetime.fromtimestamp(openweather_dict['sys'][time])
 
 
 def _parse_city(openweather_dict: dict) -> str:
-    return openweather_dict.get('name')
+    return openweather_dict['name']
 
 
 def _parse_openweather_response(openweather_response: str) -> Weather:
