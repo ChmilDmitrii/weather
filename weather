@@ -1,14 +1,20 @@
 #!/usr/bin/env python3.10
+from pathlib import Path
+
 from coordinates import get_gps_coordinates
 from weather_api_service import get_weather
 from weather_formatter import format_weather
 from errors import errors_handler
+from history import save_weather
+from history import PlainFileWeatherStorage, JSONFilaWeatherStorage
 
 
 @errors_handler
 def main():
     coordinates = get_gps_coordinates()
     weather = get_weather(coordinates)
+    save_weather(weather, PlainFileWeatherStorage(Path.cwd() / 'history.txt'))
+    save_weather(weather, JSONFilaWeatherStorage(Path.cwd() / 'history.json'))
     print(format_weather(weather))
 
 
